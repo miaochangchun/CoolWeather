@@ -40,11 +40,29 @@ public class ChooseAreaActivity extends Activity {
 	private ArrayAdapter<String> adapter;
 	private CoolWeatherDB coolWeatherDB;
 	private List<String> dataList = new ArrayList<String>();
+	/**
+	 * 省份列表
+	 */
 	private List<Province> provinceList;
+	/**
+	 * 当前选中的省份
+	 */
 	private Province selectedProvince;
+	/**
+	 * 市列表
+	 */
 	private List<City> cityList;
+	/**
+	 * 当前选中的城市
+	 */
 	private City selectedCity;
+	/**
+	 * 县列表
+	 */
 	private List<County> countyList;
+	/**
+	 * 当前选中的级别
+	 */
 	private int currentLevel;
 	
 	@Override
@@ -75,6 +93,9 @@ public class ChooseAreaActivity extends Activity {
 		queryProvinces();
 	}
 
+	/**
+	 * 查询选中城市的县城，优先从数据库查询，数据库没有从网络上查询
+	 */
 	protected void queryCounties() {
 		// TODO Auto-generated method stub
 		countyList = coolWeatherDB.loadCounties(selectedCity.getId());
@@ -93,7 +114,7 @@ public class ChooseAreaActivity extends Activity {
 	}
 
 	/**
-	 * 查询选中的
+	 * 查询选中省份的所有城市，优先从数据库查询，如果数据库没有从网络上查询
 	 */
 	protected void queryCities() {
 		// TODO Auto-generated method stub
