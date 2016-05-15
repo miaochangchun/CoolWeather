@@ -1,8 +1,12 @@
-package com.example.coolweather;
+package com.example.coolweather.app.activity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.coolweather.R;
+import com.example.coolweather.R.id;
+import com.example.coolweather.R.layout;
+import com.example.coolweather.R.menu;
 import com.example.coolweather.app.model.City;
 import com.example.coolweather.app.model.CoolWeatherDB;
 import com.example.coolweather.app.model.County;
@@ -15,8 +19,11 @@ import android.R.anim;
 import android.R.fraction;
 import android.R.integer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
@@ -68,6 +75,15 @@ public class ChooseAreaActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		if(preferences.getBoolean("city_selected", false)){
+			Intent intent = new Intent(this, WeatherActivity.class);
+			startActivity(intent);
+			finish();
+			return;
+		}
+		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.choose_area);
 		listView = (ListView) findViewById(R.id.list_view);
@@ -87,6 +103,12 @@ public class ChooseAreaActivity extends Activity {
 				} else if (currentLevel == LEVEL_CITY) {
 					selectedCity = cityList.get(index);
 					queryCounties();
+				} else if (currentLevel == LEVEL_COUNTY) {
+					String countyCode = countyList.get(index).getCountyCode();
+					Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
+					intent.putExtra("county_code", countyCode);
+					startActivity(intent);
+					finish();
 				}
 			}
 		});
